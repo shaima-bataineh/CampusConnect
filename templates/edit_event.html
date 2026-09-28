@@ -1,0 +1,102 @@
+{% extends "layout.html" %}
+{% block body_class %}page-edit-event{% endblock %}
+{% block title %}Edit Event — CampusConnect{% endblock %}
+
+
+{% block content %}
+<div class="container cc-form-wrapper">
+    <div class="row g-0 w-100 cc-form-card">
+
+        <div class="col-lg-5 d-none d-lg-flex">
+            <div class="cc-form-side w-100">
+                <div class="cc-form-icon-badge"><i class="bi bi-pencil-square"></i></div>
+                <h3 class="fw-bold mb-3">Update Event Details</h3>
+                <p style="opacity:0.9;">
+                    Keep your event information accurate so students always know what to expect.
+                </p>
+                <div class="mt-4 p-3 rounded-3" style="background: rgba(255,255,255,0.1);">
+                    <small class="d-block mb-1" style="opacity:0.8;">Editing</small>
+                    <strong>{{ event.title }}</strong>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-7">
+            <div class="p-4 p-md-5">
+                <h4 class="fw-bold mb-1">Edit Event</h4>
+                <p class="text-muted mb-4">Update the fields below and save your changes</p>
+
+                <form method="POST" action="{{ url_for('edit_event', event_id=event.id) }}" enctype="multipart/form-data" novalidate>
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold">Event Title</label>
+                        <input type="text" class="form-control" name="title" value="{{ event.title }}" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold">Description</label>
+                        <textarea class="form-control" name="description" rows="4">{{ event.description }}</textarea>
+                    </div>
+
+                    <div class="row g-3 mb-3">
+                        <div class="col-md-6">
+                            <label class="form-label fw-semibold">Event Date</label>
+                            <div class="input-group">
+                                <span class="input-group-text bg-light"><i class="bi bi-calendar3"></i></span>
+                                <input type="date" class="form-control" name="event_date" value="{{ event.event_date }}" required>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label fw-semibold">Location</label>
+                            <div class="input-group">
+                                <span class="input-group-text bg-light"><i class="bi bi-geo-alt"></i></span>
+                                <input type="text" class="form-control" name="location" value="{{ event.location }}">
+                            </div>
+                        </div>
+                    </div>
+                            <div class="mb-3">
+                           <label class="form-label fw-semibold">Event Image</label>
+                          {% if event.image %}
+                          <div class="mb-2">
+                          <img src="{{ url_for('static', filename='uploads/' + event.image) }}"
+                          alt="Current Event Image"
+                         class="img-fluid rounded shadow-sm"
+                        style="max-height:220px;">
+                            </div>
+                         {% endif %}
+
+                          <input
+                        type="file"
+                        class="form-control"
+                        name="image"
+                        accept="image/*">
+
+                        <small class="text-muted">
+                            Leave this empty if you don't want to change the current image.
+                        </small>
+                        
+                    </div>
+
+                    <div class="d-flex gap-2 mt-4">
+                        <a href="{{ url_for('dashboard') }}" class="btn btn-outline-secondary flex-fill">
+                            Cancel
+                        </a>
+                        <button type="submit" class="btn btn-cc-company flex-fill">
+                            <i class="bi bi-check-circle me-1"></i>Save Changes
+                        </button>
+                    </div>
+                </form>
+
+                <hr class="my-4">
+
+                <form method="POST" action="{{ url_for('delete_event', event_id=event.id) }}" 
+                      onsubmit="return confirm('Are you sure you want to permanently delete this event?');">
+                    <button type="submit" class="btn btn-outline-danger w-100">
+                        <i class="bi bi-trash me-1"></i>Delete this Event
+                    </button>
+                </form>
+            </div>
+        </div>
+
+    </div>
+</div>
+{% endblock %}

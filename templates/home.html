@@ -1,0 +1,428 @@
+{% extends "layout.html" %}
+{% block body_class %}page-home{% endblock %}
+{% block title %}CampusConnect — Where Campus Meets Opportunity{% endblock %}
+
+
+{% block content %}
+
+<!-- ============================================================
+     HERO SECTION
+     ============================================================ -->
+<section class="cc-hero">
+    <div class="cc-hero-shape cc-shape-1"></div>
+    <div class="cc-hero-shape cc-shape-2"></div>
+    <div class="cc-hero-shape cc-shape-3"></div>
+
+    <div class="container position-relative" style="z-index: 2;">
+        <div class="row align-items-center gy-5">
+            <div class="col-lg-6 cc-reveal cc-delay-1">
+                <span class="cc-hero-badge mb-3">
+                    <i class="bi bi-stars"></i> Trusted by 120+ Universities
+                </span>
+                <h1 class="mt-3 mb-3">Where Campus Talent Meets Real Opportunity</h1>
+                <p class="lead mb-4">
+                    CampusConnect brings students and companies together through career fairs,
+                    workshops, hackathons, and networking events — all in one platform.
+                </p>
+
+                <form class="cc-hero-search d-flex align-items-center mb-4" action="{{ url_for('list_events') }}" method="GET">
+                    <i class="bi bi-search text-muted ms-2"></i>
+                    <input type="text" name="q" class="form-control border-0" placeholder="Search events, workshops, career fairs...">
+                    <button type="submit" class="btn btn-cc-primary px-4">Search</button>
+                </form>
+
+                <div class="d-flex flex-wrap gap-3">
+                    <a href="{{ url_for('student_auth') }}" class="btn btn-cc-hero">
+                        <i class="bi bi-mortarboard me-2"></i>Join as Student
+                    </a>
+                    <a href="{{ url_for('company_auth') }}" class="btn btn-cc-hero-outline">
+                        <i class="bi bi-building me-2"></i>Join as Company
+                    </a>
+                </div>
+            </div>
+
+            <div class="col-lg-6 cc-reveal cc-delay-2">
+                <div class="cc-hero-visual mx-auto" style="max-width: 460px;">
+                    <div class="cc-hero-main-card">
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <span class="badge bg-light text-dark"><i class="bi bi-calendar-event me-1"></i>Upcoming</span>
+                            <i class="bi bi-three-dots text-white-50"></i>
+                        </div>
+                        <h5 class="fw-bold mb-1">Tech Careers Fair 2026</h5>
+                        <p class="small mb-3" style="opacity:0.85;">Meet 40+ companies hiring interns & grads</p>
+                        <div class="d-flex align-items-center gap-2">
+                            <div class="d-flex">
+                                <span class="rounded-circle bg-light border border-2 border-white" style="width:28px;height:28px;display:inline-block;margin-left:-8px;"></span>
+                                <span class="rounded-circle bg-warning border border-2 border-white" style="width:28px;height:28px;display:inline-block;margin-left:-8px;"></span>
+                                <span class="rounded-circle bg-info border border-2 border-white" style="width:28px;height:28px;display:inline-block;margin-left:-8px;"></span>
+                            </div>
+                            <small style="opacity:0.85;">320+ registered</small>
+                        </div>
+                    </div>
+
+                    <div class="cc-floating-card cc-float-card-1 d-none d-md-block">
+                        <i class="bi bi-check-circle-fill text-success me-1"></i>
+                        <span class="small fw-semibold">Registration Confirmed</span>
+                    </div>
+                    <div class="cc-floating-card cc-float-card-2 d-none d-md-block">
+                        <i class="bi bi-chat-dots-fill me-1" style="color: var(--cc-secondary);"></i>
+                        <span class="small fw-semibold">New message from Acme Inc.</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ============================================================
+     FEATURED EVENTS
+     ============================================================ -->
+<section class="cc-section">
+    <div class="container">
+        <div class="row align-items-end mb-5 cc-observe">
+            <div class="col-md-8">
+                <span class="cc-section-tag">Featured Events</span>
+                <h2 class="cc-section-title">Don't miss what's happening on campus</h2>
+            </div>
+            <div class="col-md-4 text-md-end mt-3 mt-md-0">
+                <a href="{{ url_for('list_events') }}" class="btn btn-cc-outline">
+                    View All Events <i class="bi bi-arrow-right ms-1"></i>
+                </a>
+            </div>
+        </div>
+
+        <div class="row g-4">
+            {% if featured_events %}
+                {% for event in featured_events %}
+                <div class="col-md-6 col-lg-3 cc-observe">
+                    <div class="card cc-event-card">
+                        <div class="cc-event-banner">
+                            <span class="cc-event-date-badge">{{ event.event_date }}</span>
+                            <i class="bi bi-calendar-event"></i>
+                        </div>
+                        <div class="card-body">
+                            <span class="badge badge-category rounded-pill mb-2">{{ event.company_name }}</span>
+                            <h6 class="fw-bold mb-2">{{ event.title }}</h6>
+                            <p class="text-muted small mb-3">{{ event.description }}</p>
+                            <a href="{{ url_for('view_event', event_id=event.id) }}" class="btn btn-sm btn-cc-primary w-100">
+                                View Details
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            {% else %}
+                <!-- Placeholder preview cards (shown until events exist) -->
+                <div class="col-md-6 col-lg-3 cc-observe">
+                    <div class="card cc-event-card">
+                        <div class="cc-event-banner"><i class="bi bi-briefcase"></i></div>
+                        <div class="card-body">
+                            <span class="badge badge-category rounded-pill mb-2">Acme Inc.</span>
+                            <h6 class="fw-bold mb-2">Tech Careers Fair 2026</h6>
+                            <p class="text-muted small mb-3">Meet recruiters from top tech companies hiring now.</p>
+                            <a href="{{ url_for('list_events') }}" class="btn btn-sm btn-cc-primary w-100">View Details</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-3 cc-observe">
+                    <div class="card cc-event-card">
+                        <div class="cc-event-banner"><i class="bi bi-code-slash"></i></div>
+                        <div class="card-body">
+                            <span class="badge badge-category rounded-pill mb-2">DevWorks</span>
+                            <h6 class="fw-bold mb-2">48-Hour Hackathon</h6>
+                            <p class="text-muted small mb-3">Build, ship, and pitch your idea for cash prizes.</p>
+                            <a href="{{ url_for('list_events') }}" class="btn btn-sm btn-cc-primary w-100">View Details</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-3 cc-observe">
+                    <div class="card cc-event-card">
+                        <div class="cc-event-banner"><i class="bi bi-mic"></i></div>
+                        <div class="card-body">
+                            <span class="badge badge-category rounded-pill mb-2">FinEdge</span>
+                            <h6 class="fw-bold mb-2">Finance Career Workshop</h6>
+                            <p class="text-muted small mb-3">Learn what it takes to break into finance roles.</p>
+                            <a href="{{ url_for('list_events') }}" class="btn btn-sm btn-cc-primary w-100">View Details</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-3 cc-observe">
+                    <div class="card cc-event-card">
+                        <div class="cc-event-banner"><i class="bi bi-people"></i></div>
+                        <div class="card-body">
+                            <span class="badge badge-category rounded-pill mb-2">NovaHealth</span>
+                            <h6 class="fw-bold mb-2">Networking Mixer</h6>
+                            <p class="text-muted small mb-3">Casual meetup with healthcare industry leaders.</p>
+                            <a href="{{ url_for('list_events') }}" class="btn btn-sm btn-cc-primary w-100">View Details</a>
+                        </div>
+                    </div>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</section>
+
+<!-- ============================================================
+     POPULAR CATEGORIES
+     ============================================================ -->
+<section class="cc-section bg-white">
+    <div class="container">
+        <div class="text-center mb-5 cc-observe">
+            <span class="cc-section-tag">Explore</span>
+            <h2 class="cc-section-title">Popular Categories</h2>
+            <p class="text-muted mt-2">Find events tailored to your interests and career path</p>
+        </div>
+
+        <div class="row g-4">
+            <div class="col-6 col-md-4 col-lg-2 cc-observe">
+                <div class="cc-cat-card">
+                    <div class="cc-cat-icon bg-grad-1"><i class="bi bi-briefcase-fill"></i></div>
+                    <h6 class="fw-bold mb-0">Career Fairs</h6>
+                </div>
+            </div>
+            <div class="col-6 col-md-4 col-lg-2 cc-observe">
+                <div class="cc-cat-card">
+                    <div class="cc-cat-icon bg-grad-2"><i class="bi bi-laptop"></i></div>
+                    <h6 class="fw-bold mb-0">Hackathons</h6>
+                </div>
+            </div>
+            <div class="col-6 col-md-4 col-lg-2 cc-observe">
+                <div class="cc-cat-card">
+                    <div class="cc-cat-icon bg-grad-3"><i class="bi bi-easel2-fill"></i></div>
+                    <h6 class="fw-bold mb-0">Workshops</h6>
+                </div>
+            </div>
+            <div class="col-6 col-md-4 col-lg-2 cc-observe">
+                <div class="cc-cat-card">
+                    <div class="cc-cat-icon bg-grad-4"><i class="bi bi-people-fill"></i></div>
+                    <h6 class="fw-bold mb-0">Networking</h6>
+                </div>
+            </div>
+            <div class="col-6 col-md-4 col-lg-2 cc-observe">
+                <div class="cc-cat-card">
+                    <div class="cc-cat-icon bg-grad-5"><i class="bi bi-mic-fill"></i></div>
+                    <h6 class="fw-bold mb-0">Guest Talks</h6>
+                </div>
+            </div>
+            <div class="col-6 col-md-4 col-lg-2 cc-observe">
+                <div class="cc-cat-card">
+                    <div class="cc-cat-icon bg-grad-6"><i class="bi bi-trophy-fill"></i></div>
+                    <h6 class="fw-bold mb-0">Competitions</h6>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ============================================================
+     STATISTICS
+     ============================================================ -->
+<section class="cc-section pt-0">
+    <div class="container">
+        <div class="cc-stats-section cc-observe">
+            <div class="row text-center g-4 position-relative" style="z-index:2;">
+                <div class="col-6 col-md-3">
+                    <div class="cc-stat-number">250+</div>
+                    <div class="cc-stat-label">Events Hosted</div>
+                </div>
+                <div class="col-6 col-md-3">
+                    <div class="cc-stat-number">120+</div>
+                    <div class="cc-stat-label">Partner Companies</div>
+                </div>
+                <div class="col-6 col-md-3">
+                    <div class="cc-stat-number">18k+</div>
+                    <div class="cc-stat-label">Registered Students</div>
+                </div>
+                <div class="col-6 col-md-3">
+                    <div class="cc-stat-number">96%</div>
+                    <div class="cc-stat-label">Satisfaction Rate</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ============================================================
+     WHY CAMPUSCONNECT
+     ============================================================ -->
+<section class="cc-section bg-white">
+    <div class="container">
+        <div class="row align-items-center g-5">
+            <div class="col-lg-6 cc-observe">
+                <div class="cc-why-visual">
+                    <i class="bi bi-mortarboard-fill"></i>
+                    <div class="cc-orbit-badge" style="top: 12%; left: 8%;">
+                        <i class="bi bi-calendar-check text-success"></i> Event Confirmed
+                    </div>
+                    <div class="cc-orbit-badge" style="bottom: 14%; right: 8%; animation-delay: 1.5s;">
+                        <i class="bi bi-chat-dots" style="color: var(--cc-secondary);"></i> Direct Messaging
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6 cc-observe">
+                <span class="cc-section-tag">Why CampusConnect</span>
+                <h2 class="cc-section-title mb-4">Built for students. Trusted by companies.</h2>
+
+                <div class="cc-why-item">
+                    <div class="cc-why-icon bg-grad-1"><i class="bi bi-lightning-charge-fill"></i></div>
+                    <div>
+                        <h6 class="fw-bold mb-1">Fast, Simple Registration</h6>
+                        <p class="text-muted small mb-0">Students register for events in seconds — no paperwork, no hassle.</p>
+                    </div>
+                </div>
+                <div class="cc-why-item">
+                    <div class="cc-why-icon bg-grad-2"><i class="bi bi-shield-check"></i></div>
+                    <div>
+                        <h6 class="fw-bold mb-1">Verified Companies Only</h6>
+                        <p class="text-muted small mb-0">Every company account is reviewed, so students engage with credible employers.</p>
+                    </div>
+                </div>
+                <div class="cc-why-item">
+                    <div class="cc-why-icon bg-grad-4"><i class="bi bi-chat-square-text-fill"></i></div>
+                    <div>
+                        <h6 class="fw-bold mb-1">Direct Messaging</h6>
+                        <p class="text-muted small mb-0">Chat directly with recruiters and event organizers — no middlemen.</p>
+                    </div>
+                </div>
+                <div class="cc-why-item">
+                    <div class="cc-why-icon bg-grad-5"><i class="bi bi-graph-up-arrow"></i></div>
+                    <div>
+                        <h6 class="fw-bold mb-1">Track Your Growth</h6>
+                        <p class="text-muted small mb-0">Keep a full history of every event you've attended and connection you've made.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ============================================================
+     TESTIMONIALS
+     ============================================================ -->
+<section class="cc-section">
+    <div class="container">
+        <div class="text-center mb-5 cc-observe">
+            <span class="cc-section-tag">Testimonials</span>
+            <h2 class="cc-section-title">Loved by students and employers alike</h2>
+        </div>
+
+        <div class="row g-4">
+            <div class="col-md-6 col-lg-4 cc-observe">
+                <div class="cc-testimonial-card">
+                    <i class="bi bi-quote"></i>
+                    <p class="mb-4">"CampusConnect helped me land my internship. I found the event, registered, and messaged the recruiter directly — all in one place."</p>
+                    <div class="d-flex align-items-center gap-3">
+                        <div class="cc-testimonial-avatar bg-grad-1">SM</div>
+                        <div>
+                            <h6 class="fw-bold mb-0">Sarah Mitchell</h6>
+                            <small class="text-muted">Computer Science, Class of 2026</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-4 cc-observe">
+                <div class="cc-testimonial-card">
+                    <i class="bi bi-quote"></i>
+                    <p class="mb-4">"We filled 30 internship spots in a single career fair. The registration dashboard made following up with candidates effortless."</p>
+                    <div class="d-flex align-items-center gap-3">
+                        <div class="cc-testimonial-avatar bg-grad-2">DK</div>
+                        <div>
+                            <h6 class="fw-bold mb-0">David Kim</h6>
+                            <small class="text-muted">Talent Acquisition, NovaHealth</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-4 cc-observe">
+                <div class="cc-testimonial-card">
+                    <i class="bi bi-quote"></i>
+                    <p class="mb-4">"The platform is clean, fast, and the messaging feature meant I never missed a follow-up from a company I met at a fair."</p>
+                    <div class="d-flex align-items-center gap-3">
+                        <div class="cc-testimonial-avatar bg-grad-4">AR</div>
+                        <div>
+                            <h6 class="fw-bold mb-0">Aisha Rahman</h6>
+                            <small class="text-muted">Business Administration, Class of 2027</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ============================================================
+     PARTNERS
+     ============================================================ -->
+<section class="cc-section bg-white pt-0">
+    <div class="container">
+        <div class="text-center mb-5 cc-observe">
+            <span class="cc-section-tag">Our Partners</span>
+            <h2 class="cc-section-title">Companies that host events with us</h2>
+        </div>
+    </div>
+
+    <div class="cc-partners-mask cc-observe">
+        <div class="cc-partners-track">
+            <span class="cc-partner-logo"><i class="bi bi-building"></i> Acme Inc.</span>
+            <span class="cc-partner-logo"><i class="bi bi-cpu"></i> DevWorks</span>
+            <span class="cc-partner-logo"><i class="bi bi-cash-coin"></i> FinEdge</span>
+            <span class="cc-partner-logo"><i class="bi bi-heart-pulse"></i> NovaHealth</span>
+            <span class="cc-partner-logo"><i class="bi bi-rocket-takeoff"></i> Orbitly</span>
+            <span class="cc-partner-logo"><i class="bi bi-globe2"></i> GlobalTech</span>
+            <!-- duplicate set for seamless marquee loop -->
+            <span class="cc-partner-logo"><i class="bi bi-building"></i> Acme Inc.</span>
+            <span class="cc-partner-logo"><i class="bi bi-cpu"></i> DevWorks</span>
+            <span class="cc-partner-logo"><i class="bi bi-cash-coin"></i> FinEdge</span>
+            <span class="cc-partner-logo"><i class="bi bi-heart-pulse"></i> NovaHealth</span>
+            <span class="cc-partner-logo"><i class="bi bi-rocket-takeoff"></i> Orbitly</span>
+            <span class="cc-partner-logo"><i class="bi bi-globe2"></i> GlobalTech</span>
+        </div>
+    </div>
+</section>
+
+<!-- ============================================================
+     CALL TO ACTION
+     ============================================================ -->
+<section class="cc-section">
+    <div class="container">
+        <div class="cc-cta-section cc-observe">
+            <div class="position-relative" style="z-index:2;">
+                <h2 class="fw-bold mb-3" style="font-size: clamp(1.6rem, 3.6vw, 2.4rem);">
+                    Ready to get started with CampusConnect?
+                </h2>
+                <p class="mb-4" style="opacity:0.9; max-width: 560px; margin:0 auto;">
+                    Join thousands of students and companies already connecting through campus events.
+                </p>
+                <div class="d-flex flex-wrap justify-content-center gap-3">
+                    <a href="{{ url_for('student_auth') }}" class="btn btn-cc-hero">
+                        <i class="bi bi-mortarboard me-2"></i>Get Started as Student
+                    </a>
+                    <a href="{{ url_for('company_auth') }}" class="btn btn-cc-hero-outline">
+                        <i class="bi bi-building me-2"></i>Get Started as Company
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
+    // Simple IntersectionObserver to trigger scroll animations
+    document.addEventListener("DOMContentLoaded", function () {
+        const observedElements = document.querySelectorAll(".cc-observe");
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach((entry) => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add("cc-in-view");
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.12 });
+
+        observedElements.forEach((el) => observer.observe(el));
+    });
+</script>
+{% endblock %}

@@ -1,0 +1,1205 @@
+/* ============================================================================
+   CampusConnect — Global Stylesheet
+   All styles previously inline in <style> blocks across templates have been
+   consolidated here. Organized as:
+     1. Root Variables & Base
+     2. Navbar / Footer / Flash Messages   (layout.html)
+     3. Shared Components (identical rules reused by 2+ pages)
+     4. Page-Specific Styles (scoped with body.page-* to avoid collisions
+        between pages that reuse the same class names with different values)
+   ============================================================================ */
+
+
+/* ============================================================================
+   1. ROOT VARIABLES & BASE
+   (from templates/layout.html)
+   ============================================================================ */
+:root {
+    --cc-primary: #3B82F6;
+    --cc-primary-dark: #2563EB;
+    --cc-secondary: #06b6d4;
+    --cc-student: #4338ca;
+    --cc-company: #14B8A6;
+    --cc-bg: #f8f9fc;
+    --cc-text: #1E293B;
+}
+
+* { font-family: 'Inter', sans-serif; }
+
+body {
+    background-color: var(--cc-bg);
+    color: var(--cc-text);
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+main { flex: 1; }
+
+
+/* ============================================================================
+   2. NAVBAR / FOOTER / FLASH MESSAGES
+   (from templates/layout.html)
+   ============================================================================ */
+
+/* Navbar */
+.cc-navbar {
+    background: #ffffff;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+}
+
+.cc-navbar .navbar-brand {
+    font-weight: 800;
+    font-size: 1.4rem;
+    color: var(--cc-primary) !important;
+    letter-spacing: -0.5px;
+}
+
+.cc-navbar .navbar-brand i { color: var(--cc-secondary); }
+
+.cc-navbar .nav-link {
+    font-weight: 500;
+    color: #4b5563 !important;
+    margin: 0 4px;
+}
+
+.cc-navbar .nav-link:hover,
+.cc-navbar .nav-link.active {
+    color: var(--cc-primary) !important;
+}
+
+.btn-cc-primary {
+    background: var(--cc-primary);
+    border: none;
+    color: #fff;
+    font-weight: 600;
+    padding: 0.5rem 1.25rem;
+    border-radius: 8px;
+    transition: all 0.2s ease;
+}
+.btn-cc-primary:hover {
+    background: var(--cc-primary-dark);
+    color: #fff;
+}
+
+.btn-cc-outline {
+    border: 1.5px solid var(--cc-primary);
+    color: var(--cc-primary);
+    font-weight: 600;
+    padding: 0.5rem 1.25rem;
+    border-radius: 8px;
+}
+.btn-cc-outline:hover {
+    background: var(--cc-primary);
+    color: #fff;
+}
+
+/* Footer */
+.cc-footer {
+    background: #12102080;
+    background: #1e1b2e;
+    color: #cbd5e1;
+    padding: 2rem 0;
+    margin-top: auto;
+}
+.cc-footer a { color: #cbd5e1; text-decoration: none; }
+.cc-footer a:hover { color: #fff; }
+
+/* Flash messages */
+.cc-flash-wrap {
+    position: fixed;
+    top: 80px;
+    right: 20px;
+    z-index: 1080;
+    width: 100%;
+    max-width: 380px;
+}
+
+.cc-flash-wrap .alert {
+    box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+    border: none;
+    border-radius: 10px;
+}
+
+
+/* ============================================================================
+   3. SHARED COMPONENTS
+   Rules that were byte-for-byte identical across two or more page templates.
+   Consolidated here once to remove duplication. (Rules that share a selector
+   name but differ in value between pages are NOT here — see the page-specific
+   sections below, scoped with body.page-* to preserve each page's design.)
+   ============================================================================ */
+
+/* --- Auth pages shared shell: student_auth.html + company_auth.html --- */
+.auth-wrapper {
+    min-height: calc(100vh - 160px);
+    display: flex;
+    align-items: center;
+}
+
+.auth-side-panel {
+    border-radius: 16px 0 0 16px;
+    color: #fff;
+    padding: 3rem 2.5rem;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.auth-side-panel::before {
+    content: "";
+    position: absolute;
+    width: 260px;
+    height: 260px;
+    background: rgba(255,255,255,0.08);
+    border-radius: 50%;
+    top: -80px;
+    right: -80px;
+}
+
+.auth-side-panel::after {
+    content: "";
+    position: absolute;
+    width: 180px;
+    height: 180px;
+    background: rgba(255,255,255,0.06);
+    border-radius: 50%;
+    bottom: -60px;
+    left: -40px;
+}
+
+.auth-icon-badge {
+    width: 64px;
+    height: 64px;
+    background: rgba(255,255,255,0.15);
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.8rem;
+    margin-bottom: 1.5rem;
+}
+
+.auth-card-panel {
+    background: #fff;
+    border-radius: 0 16px 16px 0;
+    padding: 3rem 2.5rem;
+    height: 100%;
+}
+
+@media (max-width: 991.98px) {
+    .auth-side-panel { border-radius: 16px 16px 0 0; }
+    .auth-card-panel { border-radius: 0 0 16px 16px; }
+}
+
+.cc-nav-pills .nav-link {
+    border-radius: 8px;
+    font-weight: 600;
+    color: #6b7280;
+    padding: 0.6rem 1.5rem;
+}
+
+.auth-feature-list li {
+    margin-bottom: 0.75rem;
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    opacity: 0.95;
+}
+
+/* --- Event form shared shell: create_event.html + edit_event.html --- */
+.cc-form-wrapper {
+    min-height: calc(100vh - 160px);
+    display: flex;
+    align-items: center;
+    padding: 3rem 0;
+}
+.cc-form-card {
+    background: #fff;
+    border-radius: 20px;
+    box-shadow: 0 20px 50px rgba(13, 148, 136, 0.12);
+    overflow: hidden;
+}
+.cc-form-side {
+    background: linear-gradient(160deg, #0d9488, #0f766e);
+    color: #fff;
+    padding: 3rem 2.5rem;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+}
+.cc-form-side::before {
+    content: "";
+    position: absolute;
+    width: 220px; height: 220px;
+    background: rgba(255,255,255,0.08);
+    border-radius: 50%;
+    top: -70px; right: -70px;
+}
+.cc-form-icon-badge {
+    width: 62px; height: 62px;
+    background: rgba(255,255,255,0.15);
+    border-radius: 16px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.7rem;
+    margin-bottom: 1.3rem;
+}
+.btn-cc-company:hover { background: #0b7a70; color: #fff; }
+
+/* --- Dashboard shared shell: student_dashboard.html + company_dashboard.html --- */
+.cc-dash-header::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image: radial-gradient(circle, rgba(255,255,255,0.12) 1.5px, transparent 1.5px);
+    background-size: 24px 24px;
+    opacity: 0.4;
+}
+.cc-stat-card {
+    background: #fff;
+    border-radius: 16px;
+    padding: 1.5rem;
+    box-shadow: 0 10px 26px rgba(30,27,46,0.08);
+    margin-top: -3.5rem;
+    position: relative;
+    z-index: 3;
+    height: 100%;
+}
+.cc-stat-icon {
+    width: 48px; height: 48px;
+    border-radius: 12px;
+    display: flex; align-items: center; justify-content: center;
+    color: #fff; font-size: 1.3rem;
+    margin-bottom: 0.8rem;
+}
+.cc-stat-value { font-weight: 800; font-size: 1.7rem; }
+
+/* --- Event card shared shell: home.html + events.html --- */
+.cc-event-card {
+    border: none;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 4px 18px rgba(30, 27, 46, 0.06);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    height: 100%;
+}
+.cc-event-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 20px 40px rgba(30, 27, 46, 0.14);
+}
+.cc-event-banner {
+    height: 140px;
+    background: linear-gradient(135deg, var(--cc-primary), var(--cc-secondary));
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.cc-event-date-badge {
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    background: #fff;
+    color: var(--cc-primary);
+    font-weight: 700;
+    font-size: 0.75rem;
+    padding: 0.3rem 0.7rem;
+    border-radius: 8px;
+}
+.badge-category {
+    background: rgba(13, 148, 136, 0.1);
+    color: var(--cc-company);
+    font-weight: 600;
+    font-size: 0.72rem;
+}
+
+/* --- About / Home shared shell: stats + section tag --- */
+.cc-section-tag {
+    display: inline-block;
+    color: var(--cc-primary);
+    background: rgba(67, 56, 202, 0.08);
+    font-weight: 700;
+    font-size: 0.78rem;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    padding: 0.4rem 0.9rem;
+    border-radius: 50px;
+    margin-bottom: 0.8rem;
+}
+.cc-stat-number {
+    font-weight: 800;
+    font-size: clamp(2rem, 4vw, 2.8rem);
+    background: linear-gradient(90deg, #a5b4fc, #5eead4);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+}
+.cc-stat-label { color: #cbd5e1; font-weight: 500; }
+
+
+/* ============================================================================
+   4. PAGE-SPECIFIC STYLES
+   Scoped under body.page-* so that pages which reuse the same class name
+   with a different value (e.g. .cc-empty-icon, .cc-dash-header,
+   .form-control:focus) keep their own distinct look now that everything
+   lives in one shared stylesheet.
+   ============================================================================ */
+
+/* ---------------------------------------------------------------------------
+   4.1 Home (templates/home.html)                          body.page-home
+   --------------------------------------------------------------------------- */
+@keyframes ccFadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes ccFloat {
+    0%, 100% { transform: translateY(0px); }
+    50%      { transform: translateY(-14px); }
+}
+@keyframes ccPulseRing {
+    0%   { box-shadow: 0 0 0 0 rgba(67, 56, 202, 0.25); }
+    100% { box-shadow: 0 0 0 22px rgba(67, 56, 202, 0); }
+}
+@keyframes ccGradientShift {
+    0%   { background-position: 0% 50%; }
+    50%  { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+@keyframes ccMarquee {
+    from { transform: translateX(0); }
+    to   { transform: translateX(-50%); }
+}
+
+body.page-home .cc-reveal {
+    opacity: 0;
+    animation: ccFadeUp 0.7s ease forwards;
+}
+body.page-home .cc-delay-1 { animation-delay: 0.05s; }
+body.page-home .cc-delay-2 { animation-delay: 0.15s; }
+body.page-home .cc-delay-3 { animation-delay: 0.25s; }
+body.page-home .cc-delay-4 { animation-delay: 0.35s; }
+
+/* Scroll-triggered reveal (JS toggles .cc-in-view) */
+body.page-home .cc-observe {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+}
+body.page-home .cc-observe.cc-in-view {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Hero */
+body.page-home .cc-hero {
+    position: relative;
+    overflow: hidden;
+    background: linear-gradient(120deg, #312e81, #4338ca, #0d9488, #4338ca);
+    background-size: 300% 300%;
+    animation: ccGradientShift 14s ease infinite;
+    padding: 7rem 0 8rem;
+    color: #fff;
+}
+
+body.page-home .cc-hero::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image: radial-gradient(circle, rgba(255,255,255,0.14) 1.5px, transparent 1.5px);
+    background-size: 26px 26px;
+    opacity: 0.4;
+}
+
+body.page-home .cc-hero-shape {
+    position: absolute;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.08);
+    animation: ccFloat 6s ease-in-out infinite;
+}
+body.page-home .cc-shape-1 { width: 220px; height: 220px; top: 10%; right: 8%; animation-delay: 0s; }
+body.page-home .cc-shape-2 { width: 130px; height: 130px; bottom: 12%; right: 22%; animation-delay: 1.2s; }
+body.page-home .cc-shape-3 { width: 90px;  height: 90px;  top: 55%; left: 6%; animation-delay: 2s; }
+
+body.page-home .cc-hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: rgba(255,255,255,0.15);
+    border: 1px solid rgba(255,255,255,0.25);
+    padding: 0.45rem 1.1rem;
+    border-radius: 50px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    backdrop-filter: blur(4px);
+}
+
+body.page-home .cc-hero h1 {
+    font-weight: 800;
+    font-size: clamp(2.2rem, 5vw, 3.6rem);
+    letter-spacing: -1px;
+    line-height: 1.1;
+}
+
+body.page-home .cc-hero .lead {
+    font-size: 1.15rem;
+    opacity: 0.92;
+    max-width: 560px;
+}
+
+body.page-home .cc-hero-search {
+    background: #fff;
+    border-radius: 16px;
+    padding: 0.6rem;
+    box-shadow: 0 20px 45px rgba(0,0,0,0.25);
+    max-width: 560px;
+}
+body.page-home .cc-hero-search input {
+    border: none;
+    padding: 0.7rem 1rem;
+}
+body.page-home .cc-hero-search input:focus { box-shadow: none; }
+
+body.page-home .btn-cc-hero {
+    background: #fff;
+    color: var(--cc-primary);
+    font-weight: 700;
+    padding: 0.75rem 1.75rem;
+    border-radius: 10px;
+    border: none;
+    transition: 0.25s ease;
+}
+body.page-home .btn-cc-hero:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 24px rgba(0,0,0,0.2);
+    color: var(--cc-primary-dark);
+}
+
+body.page-home .btn-cc-hero-outline {
+    border: 1.5px solid rgba(255,255,255,0.6);
+    color: #fff;
+    font-weight: 700;
+    padding: 0.75rem 1.75rem;
+    border-radius: 10px;
+    transition: 0.25s ease;
+}
+body.page-home .btn-cc-hero-outline:hover {
+    background: rgba(255,255,255,0.15);
+    color: #fff;
+    transform: translateY(-3px);
+}
+
+body.page-home .cc-hero-visual {
+    position: relative;
+    z-index: 2;
+}
+
+body.page-home .cc-floating-card {
+    position: absolute;
+    background: #fff;
+    border-radius: 14px;
+    padding: 0.9rem 1.1rem;
+    box-shadow: 0 15px 35px rgba(0,0,0,0.25);
+    color: #1e1b2e;
+    animation: ccFloat 5s ease-in-out infinite;
+}
+body.page-home .cc-float-card-1 { top: -10px; left: -20px; animation-delay: 0.3s; }
+body.page-home .cc-float-card-2 { bottom: -15px; right: -10px; animation-delay: 1.5s; }
+
+body.page-home .cc-hero-main-card {
+    background: rgba(255,255,255,0.1);
+    border: 1px solid rgba(255,255,255,0.25);
+    border-radius: 24px;
+    backdrop-filter: blur(8px);
+    padding: 2rem;
+}
+
+/* Section headers */
+body.page-home .cc-section { padding: 5.5rem 0; }
+body.page-home .cc-section-title {
+    font-weight: 800;
+    letter-spacing: -0.5px;
+    font-size: clamp(1.7rem, 3.4vw, 2.4rem);
+}
+
+/* Featured events */
+body.page-home .cc-event-banner i { font-size: 2.8rem; color: rgba(255,255,255,0.9); }
+body.page-home .cc-event-card .card-body { padding: 1.4rem; }
+body.page-home .cc-event-card .badge-category {
+    background: rgba(13, 148, 136, 0.1);
+    color: var(--cc-company);
+    font-weight: 600;
+    font-size: 0.72rem;
+}
+
+/* Categories */
+body.page-home .cc-cat-card {
+    border-radius: 16px;
+    padding: 2rem 1.2rem;
+    text-align: center;
+    background: #fff;
+    border: 1px solid #eef0f5;
+    transition: 0.3s ease;
+    height: 100%;
+}
+body.page-home .cc-cat-card:hover {
+    border-color: transparent;
+    box-shadow: 0 16px 32px rgba(30, 27, 46, 0.1);
+    transform: translateY(-6px);
+}
+body.page-home .cc-cat-icon {
+    width: 62px;
+    height: 62px;
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 1rem;
+    font-size: 1.6rem;
+    color: #fff;
+}
+
+/* Stats */
+body.page-home .cc-stats-section {
+    background: #1e1b2e;
+    color: #fff;
+    border-radius: 24px;
+    margin: 0 auto;
+    padding: 3.5rem 2rem;
+    position: relative;
+    overflow: hidden;
+}
+body.page-home .cc-stats-section::before {
+    content: "";
+    position: absolute;
+    width: 320px; height: 320px;
+    background: radial-gradient(circle, rgba(67,56,202,0.35), transparent 70%);
+    top: -120px; left: -80px;
+}
+
+/* Why CampusConnect */
+body.page-home .cc-why-icon {
+    width: 56px;
+    height: 56px;
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.4rem;
+    color: #fff;
+    flex-shrink: 0;
+}
+body.page-home .cc-why-item {
+    display: flex;
+    gap: 1.1rem;
+    padding: 1.4rem;
+    border-radius: 16px;
+    transition: 0.3s ease;
+}
+body.page-home .cc-why-item:hover { background: #f8f9fc; }
+
+body.page-home .cc-why-visual {
+    background: linear-gradient(160deg, #4338ca, #0d9488);
+    border-radius: 24px;
+    min-height: 380px;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+body.page-home .cc-why-visual i {
+    font-size: 9rem;
+    color: rgba(255,255,255,0.18);
+}
+body.page-home .cc-why-visual .cc-orbit-badge {
+    position: absolute;
+    background: #fff;
+    border-radius: 14px;
+    padding: 0.8rem 1.1rem;
+    box-shadow: 0 15px 30px rgba(0,0,0,0.2);
+    font-weight: 600;
+    font-size: 0.85rem;
+    color: #1e1b2e;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    animation: ccFloat 6s ease-in-out infinite;
+}
+
+/* Testimonials */
+body.page-home .cc-testimonial-card {
+    background: #fff;
+    border-radius: 18px;
+    padding: 2rem;
+    height: 100%;
+    border: 1px solid #eef0f5;
+    position: relative;
+}
+body.page-home .cc-testimonial-card .bi-quote {
+    font-size: 2.2rem;
+    color: rgba(67, 56, 202, 0.15);
+    position: absolute;
+    top: 1.2rem;
+    right: 1.4rem;
+}
+body.page-home .cc-testimonial-avatar {
+    width: 46px;
+    height: 46px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    font-weight: 700;
+    font-size: 1rem;
+}
+
+/* Partners marquee */
+body.page-home .cc-partners-track {
+    display: flex;
+    gap: 3.5rem;
+    width: max-content;
+    animation: ccMarquee 22s linear infinite;
+    align-items: center;
+}
+body.page-home .cc-partners-mask {
+    overflow: hidden;
+    -webkit-mask-image: linear-gradient(90deg, transparent, #000 10%, #000 90%, transparent);
+    mask-image: linear-gradient(90deg, transparent, #000 10%, #000 90%, transparent);
+}
+body.page-home .cc-partner-logo {
+    font-weight: 800;
+    font-size: 1.3rem;
+    color: #9ca3af;
+    white-space: nowrap;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    opacity: 0.8;
+}
+
+/* CTA */
+body.page-home .cc-cta-section {
+    background: linear-gradient(120deg, #4338ca, #0d9488);
+    border-radius: 28px;
+    padding: 4rem 2rem;
+    color: #fff;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+}
+body.page-home .cc-cta-section::before,
+body.page-home .cc-cta-section::after {
+    content: "";
+    position: absolute;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.08);
+}
+body.page-home .cc-cta-section::before { width: 280px; height: 280px; top: -100px; left: -60px; }
+body.page-home .cc-cta-section::after { width: 200px; height: 200px; bottom: -80px; right: -40px; }
+
+/* Utility color classes for icon backgrounds (home + about) */
+.bg-grad-1 { background: linear-gradient(135deg, #4338ca, #6366f1); }
+.bg-grad-2 { background: linear-gradient(135deg, #0d9488, #14b8a6); }
+.bg-grad-3 { background: linear-gradient(135deg, #ea580c, #f97316); }
+.bg-grad-4 { background: linear-gradient(135deg, #db2777, #ec4899); }
+.bg-grad-5 { background: linear-gradient(135deg, #0284c7, #38bdf8); }
+.bg-grad-6 { background: linear-gradient(135deg, #7c3aed, #a78bfa); }
+
+
+/* ---------------------------------------------------------------------------
+   4.2 Events (templates/events.html)                       body.page-events
+   --------------------------------------------------------------------------- */
+body.page-events .cc-page-header {
+    background: linear-gradient(120deg, #312e81, #4338ca, #0d9488);
+    background-size: 200% 200%;
+    color: #fff;
+    padding: 3.5rem 0 5rem;
+    position: relative;
+    overflow: hidden;
+}
+body.page-events .cc-page-header::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image: radial-gradient(circle, rgba(255,255,255,0.12) 1.5px, transparent 1.5px);
+    background-size: 24px 24px;
+    opacity: 0.4;
+}
+body.page-events .cc-page-header h1 { font-weight: 800; letter-spacing: -1px; }
+
+body.page-events .cc-search-bar {
+    background: #fff;
+    border-radius: 14px;
+    padding: 0.5rem;
+    box-shadow: 0 15px 40px rgba(0,0,0,0.2);
+    margin-top: -2.75rem;
+    position: relative;
+    z-index: 3;
+}
+body.page-events .cc-search-bar input, body.page-events .cc-search-bar select {
+    border: none;
+}
+body.page-events .cc-search-bar input:focus, body.page-events .cc-search-bar select:focus { box-shadow: none; }
+
+body.page-events .cc-events-section { padding: 4rem 0 5.5rem; }
+
+body.page-events .cc-event-banner i { font-size: 2.6rem; color: rgba(255,255,255,0.9); }
+
+body.page-events .cc-empty-state {
+    text-align: center;
+    padding: 4rem 1.5rem;
+    background: #fff;
+    border-radius: 20px;
+    border: 1px dashed #dfe3ec;
+}
+body.page-events .cc-empty-icon {
+    width: 88px;
+    height: 88px;
+    border-radius: 50%;
+    background: rgba(67, 56, 202, 0.08);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2.4rem;
+    color: var(--cc-primary);
+    margin: 0 auto 1.5rem;
+}
+
+body.page-events .cc-results-count { color: #6b7280; font-weight: 500; }
+
+
+/* ---------------------------------------------------------------------------
+   4.3 About (templates/about.html)                          body.page-about
+   --------------------------------------------------------------------------- */
+body.page-about .cc-about-hero {
+    background: linear-gradient(120deg, #312e81, #4338ca, #0d9488);
+    background-size: 200% 200%;
+    color: #fff;
+    padding: 5rem 0 6rem;
+    position: relative;
+    overflow: hidden;
+    text-align: center;
+}
+body.page-about .cc-about-hero::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image: radial-gradient(circle, rgba(255,255,255,0.12) 1.5px, transparent 1.5px);
+    background-size: 24px 24px;
+    opacity: 0.4;
+}
+body.page-about .cc-about-hero h1 { font-weight: 800; letter-spacing: -1px; }
+
+body.page-about .cc-section { padding: 5rem 0; }
+body.page-about .cc-section-title { font-weight: 800; letter-spacing: -0.5px; }
+
+body.page-about .cc-value-card {
+    background: #fff;
+    border-radius: 16px;
+    border: 1px solid #eef0f5;
+    padding: 2rem 1.5rem;
+    height: 100%;
+    transition: 0.3s ease;
+    text-align: center;
+}
+body.page-about .cc-value-card:hover { transform: translateY(-6px); box-shadow: 0 16px 32px rgba(30,27,46,0.1); }
+body.page-about .cc-value-icon {
+    width: 60px; height: 60px;
+    border-radius: 16px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.6rem; color: #fff;
+    margin: 0 auto 1rem;
+}
+
+body.page-about .cc-stats-section {
+    background: #1e1b2e;
+    color: #fff;
+    border-radius: 24px;
+    padding: 3.5rem 2rem;
+}
+
+body.page-about .cc-team-card {
+    background: #fff;
+    border-radius: 16px;
+    border: 1px solid #eef0f5;
+    text-align: center;
+    padding: 2rem 1.2rem;
+    transition: 0.3s ease;
+}
+body.page-about .cc-team-card:hover { transform: translateY(-6px); box-shadow: 0 16px 32px rgba(30,27,46,0.1); }
+body.page-about .cc-team-avatar {
+    width: 84px; height: 84px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    color: #fff; font-weight: 700; font-size: 1.6rem;
+    margin: 0 auto 1rem;
+}
+
+
+/* ---------------------------------------------------------------------------
+   4.4 Contact (templates/contact.html)                    body.page-contact
+   --------------------------------------------------------------------------- */
+body.page-contact .cc-contact-hero {
+    background: linear-gradient(120deg, #312e81, #4338ca, #0d9488);
+    background-size: 200% 200%;
+    color: #fff;
+    padding: 4.5rem 0 6rem;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+}
+body.page-contact .cc-contact-hero::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image: radial-gradient(circle, rgba(255,255,255,0.12) 1.5px, transparent 1.5px);
+    background-size: 24px 24px;
+    opacity: 0.4;
+}
+body.page-contact .cc-contact-hero h1 { font-weight: 800; letter-spacing: -1px; }
+
+body.page-contact .cc-contact-card {
+    background: #fff;
+    border-radius: 20px;
+    box-shadow: 0 20px 50px rgba(30,27,46,0.1);
+    margin-top: -4rem;
+    position: relative;
+    z-index: 3;
+    overflow: hidden;
+}
+
+body.page-contact .cc-contact-info {
+    background: linear-gradient(160deg, #4338ca, #0d9488);
+    color: #fff;
+    padding: 3rem 2.5rem;
+    height: 100%;
+}
+body.page-contact .cc-contact-info-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+    margin-bottom: 1.6rem;
+}
+body.page-contact .cc-contact-info-icon {
+    width: 44px; height: 44px;
+    background: rgba(255,255,255,0.15);
+    border-radius: 12px;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+}
+
+body.page-contact .form-control:focus {
+    border-color: var(--cc-primary);
+    box-shadow: 0 0 0 0.2rem rgba(67, 56, 202, 0.15);
+}
+body.page-contact .btn-cc-send {
+    background: var(--cc-primary);
+    border: none;
+    color: #fff;
+    font-weight: 700;
+    padding: 0.75rem 2rem;
+    border-radius: 10px;
+}
+body.page-contact .btn-cc-send:hover { background: var(--cc-primary-dark); color: #fff; }
+
+body.page-contact .cc-social-icons a {
+    width: 38px; height: 38px;
+    background: rgba(255,255,255,0.15);
+    border-radius: 10px;
+    display: inline-flex; align-items: center; justify-content: center;
+    color: #fff;
+    margin-right: 0.5rem;
+    transition: 0.2s ease;
+}
+body.page-contact .cc-social-icons a:hover { background: rgba(255,255,255,0.3); }
+
+body.page-contact .cc-faq-item { border-bottom: 1px solid #f1f2f6; padding: 1.2rem 0; }
+
+
+/* ---------------------------------------------------------------------------
+   4.5 Event Details (templates/details.html)              body.page-details
+   --------------------------------------------------------------------------- */
+body.page-details .cc-detail-header {
+    background: linear-gradient(120deg, #312e81, #4338ca, #0d9488);
+    background-size: 200% 200%;
+    color: #fff;
+    padding: 3rem 0 6.5rem;
+    position: relative;
+    overflow: hidden;
+}
+body.page-details .cc-detail-header::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image: radial-gradient(circle, rgba(255,255,255,0.12) 1.5px, transparent 1.5px);
+    background-size: 24px 24px;
+    opacity: 0.4;
+}
+body.page-details .cc-detail-header h1 { font-weight: 800; letter-spacing: -1px; }
+
+body.page-details .cc-breadcrumb a { color: rgba(255,255,255,0.8); text-decoration: none; }
+body.page-details .cc-breadcrumb a:hover { color: #fff; }
+
+body.page-details .cc-detail-card {
+    background: #fff;
+    border-radius: 18px;
+    border: none;
+    box-shadow: 0 10px 30px rgba(30,27,46,0.08);
+}
+
+body.page-details .cc-sidebar-card {
+    background: #fff;
+    border-radius: 18px;
+    border: none;
+    box-shadow: 0 10px 30px rgba(30,27,46,0.08);
+    margin-top: -4.5rem;
+    position: relative;
+    z-index: 3;
+}
+
+body.page-details .cc-info-row {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    padding: 0.7rem 0;
+    border-bottom: 1px solid #f1f2f6;
+}
+body.page-details .cc-info-row:last-child { border-bottom: none; }
+body.page-details .cc-info-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    background: rgba(67, 56, 202, 0.08);
+    color: var(--cc-primary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+body.page-details .btn-cc-register {
+    background: var(--cc-primary);
+    color: #fff;
+    font-weight: 700;
+    padding: 0.75rem;
+    border-radius: 10px;
+    border: none;
+}
+body.page-details .btn-cc-register:hover { background: var(--cc-primary-dark); color: #fff; }
+
+body.page-details .btn-cc-unregister {
+    background: #fff;
+    color: #dc2626;
+    border: 1.5px solid #dc2626;
+    font-weight: 700;
+    padding: 0.75rem;
+    border-radius: 10px;
+}
+body.page-details .btn-cc-unregister:hover { background: #dc2626; color: #fff; }
+
+
+/* ---------------------------------------------------------------------------
+   4.6 Student Auth (templates/student_auth.html)   body.page-student-auth
+   --------------------------------------------------------------------------- */
+body.page-student-auth .auth-side-panel {
+    background: linear-gradient(160deg, #4338ca 0%, #312e81 100%);
+}
+
+body.page-student-auth .auth-card-panel {
+    box-shadow: 0 20px 50px rgba(67, 56, 202, 0.12);
+}
+
+body.page-student-auth .cc-nav-pills .nav-link.active {
+    background: var(--cc-student);
+    color: #fff;
+}
+
+body.page-student-auth .form-control:focus {
+    border-color: var(--cc-student);
+    box-shadow: 0 0 0 0.2rem rgba(67, 56, 202, 0.15);
+}
+
+body.page-student-auth .btn-student {
+    background: var(--cc-student);
+    border: none;
+    color: #fff;
+    font-weight: 600;
+    padding: 0.65rem;
+    border-radius: 8px;
+}
+body.page-student-auth .btn-student:hover { background: #362f9e; color: #fff; }
+
+
+/* ---------------------------------------------------------------------------
+   4.7 Company Auth (templates/company_auth.html)  body.page-company-auth
+   --------------------------------------------------------------------------- */
+body.page-company-auth .auth-side-panel {
+    background: linear-gradient(160deg, #0d9488 0%, #0f766e 100%);
+}
+
+body.page-company-auth .auth-card-panel {
+    box-shadow: 0 20px 50px rgba(13, 148, 136, 0.12);
+}
+
+body.page-company-auth .cc-nav-pills .nav-link.active {
+    background: var(--cc-company);
+    color: #fff;
+}
+
+body.page-company-auth .form-control:focus {
+    border-color: var(--cc-company);
+    box-shadow: 0 0 0 0.2rem rgba(13, 148, 136, 0.15);
+}
+
+body.page-company-auth .btn-company {
+    background: var(--cc-company);
+    border: none;
+    color: #fff;
+    font-weight: 600;
+    padding: 0.65rem;
+    border-radius: 8px;
+}
+body.page-company-auth .btn-company:hover { background: #0b7a70; color: #fff; }
+
+
+/* ---------------------------------------------------------------------------
+   4.8 Student Dashboard (templates/student_dashboard.html)
+   body.page-student-dashboard
+   --------------------------------------------------------------------------- */
+body.page-student-dashboard .cc-dash-header {
+    background: linear-gradient(120deg, #312e81, #4338ca);
+    color: #fff;
+    padding: 3rem 0 5.5rem;
+    position: relative;
+    overflow: hidden;
+}
+
+body.page-student-dashboard .cc-reg-card {
+    border: none;
+    border-radius: 16px;
+    box-shadow: 0 4px 18px rgba(30,27,46,0.06);
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+body.page-student-dashboard .cc-reg-card:hover { transform: translateY(-4px); box-shadow: 0 16px 32px rgba(30,27,46,0.12); }
+
+body.page-student-dashboard .cc-reg-icon {
+    width: 54px; height: 54px;
+    border-radius: 12px;
+    background: linear-gradient(135deg, var(--cc-primary), var(--cc-secondary));
+    color: #fff;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.4rem;
+}
+
+body.page-student-dashboard .cc-empty-state {
+    text-align: center;
+    padding: 3.5rem 1.5rem;
+    background: #fff;
+    border-radius: 20px;
+    border: 1px dashed #dfe3ec;
+}
+body.page-student-dashboard .cc-empty-icon {
+    width: 80px; height: 80px; border-radius: 50%;
+    background: rgba(67, 56, 202, 0.08);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 2.2rem; color: var(--cc-primary);
+    margin: 0 auto 1.2rem;
+}
+
+
+/* ---------------------------------------------------------------------------
+   4.9 Company Dashboard (templates/company_dashboard.html)
+   body.page-company-dashboard
+   --------------------------------------------------------------------------- */
+body.page-company-dashboard .cc-dash-header {
+    background: linear-gradient(120deg, #0f766e, #0d9488);
+    color: #fff;
+    padding: 3rem 0 5.5rem;
+    position: relative;
+    overflow: hidden;
+}
+
+body.page-company-dashboard .cc-event-row {
+    border: none;
+    border-radius: 14px;
+    box-shadow: 0 4px 18px rgba(30,27,46,0.06);
+    transition: box-shadow 0.25s ease;
+}
+body.page-company-dashboard .cc-event-row:hover { box-shadow: 0 14px 30px rgba(30,27,46,0.1); }
+
+body.page-company-dashboard .cc-event-thumb {
+    width: 54px; height: 54px;
+    border-radius: 12px;
+    background: linear-gradient(135deg, var(--cc-company), #14b8a6);
+    color: #fff;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.4rem;
+    flex-shrink: 0;
+}
+
+body.page-company-dashboard .cc-empty-state {
+    text-align: center;
+    padding: 3.5rem 1.5rem;
+    background: #fff;
+    border-radius: 20px;
+    border: 1px dashed #dfe3ec;
+}
+body.page-company-dashboard .cc-empty-icon {
+    width: 80px; height: 80px; border-radius: 50%;
+    background: rgba(13, 148, 136, 0.08);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 2.2rem; color: var(--cc-company);
+    margin: 0 auto 1.2rem;
+}
+
+body.page-company-dashboard .btn-cc-company {
+    background: var(--cc-company);
+    color: #fff;
+    font-weight: 600;
+    border: none;
+    border-radius: 8px;
+}
+
+
+/* ---------------------------------------------------------------------------
+   4.10 Create Event (templates/create_event.html)
+   body.page-create-event
+   --------------------------------------------------------------------------- */
+body.page-create-event .form-control:focus,
+body.page-create-event .form-select:focus {
+    border-color: var(--cc-company);
+    box-shadow: 0 0 0 0.2rem rgba(13, 148, 136, 0.15);
+}
+body.page-create-event .btn-cc-company {
+    background: var(--cc-company);
+    border: none;
+    color: #fff;
+    font-weight: 700;
+    padding: 0.75rem;
+    border-radius: 10px;
+}
+
+
+/* ---------------------------------------------------------------------------
+   4.11 Edit Event (templates/edit_event.html)
+   body.page-edit-event
+   --------------------------------------------------------------------------- */
+body.page-edit-event .form-control:focus {
+    border-color: var(--cc-company);
+    box-shadow: 0 0 0 0.2rem rgba(13, 148, 136, 0.15);
+}
+body.page-edit-event .btn-cc-company {
+    background: var(--cc-company);
+    border: none;
+    color: #fff;
+    font-weight: 700;
+    padding: 0.75rem;
+    border-radius: 10px;
+}

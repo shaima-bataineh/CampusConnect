@@ -1,0 +1,104 @@
+{% extends "layout.html" %}
+{% block body_class %}page-events{% endblock %}
+{% block title %}Explore Events — CampusConnect{% endblock %}
+
+
+{% block content %}
+
+<!-- Page Header -->
+<section class="cc-page-header">
+    <div class="container position-relative" style="z-index:2;">
+        <span class="cc-hero-badge d-inline-flex align-items-center gap-2 mb-3 px-3 py-2 rounded-pill"
+              style="background: rgba(255,255,255,0.15); border:1px solid rgba(255,255,255,0.25); font-size:0.85rem; font-weight:600;">
+            <i class="bi bi-calendar-event"></i> {{ events|length }} Event{{ 's' if events|length != 1 else '' }} Available
+        </span>
+        <h1 class="display-6 mb-2">Explore Campus Events</h1>
+        <p class="mb-0" style="opacity:0.9; max-width: 560px;">
+            Career fairs, workshops, hackathons and more — hosted by companies looking to meet students like you.
+        </p>
+    </div>
+</section>
+
+<div class="container">
+    <div class="cc-search-bar">
+        <form method="GET" action="{{ url_for('list_events') }}" class="row g-2 align-items-center">
+            <div class="col-md-9">
+                <div class="input-group">
+                    <span class="input-group-text bg-white border-0"><i class="bi bi-search text-muted"></i></span>
+                    <input type="text" name="q" value="{{ request.args.get('q', '') }}" class="form-control"
+                           placeholder="Search by event name, company, or keyword...">
+                </div>
+            </div>
+            <div class="col-md-3 d-grid">
+                <button type="submit" class="btn btn-cc-primary">
+                    <i class="bi bi-funnel me-1"></i>Search
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Events Grid -->
+<section class="cc-events-section">
+    <div class="container">
+
+        {% if events %}
+            <p class="cc-results-count mb-4">Showing {{ events|length }} upcoming event{{ 's' if events|length != 1 else '' }}</p>
+
+            <div class="row g-4">
+                {% for event in events %}
+                <div class="col-sm-6 col-lg-4 col-xl-3">
+                    <div class="card cc-event-card">
+                        <div class="cc-event-banner">
+                            <span class="cc-event-date-badge">
+                                <i class="bi bi-calendar3 me-1"></i>{{ event.event_date }}
+                            </span>
+                            <i class="bi bi-calendar-event"></i>
+                        </div>
+                        <div class="card-body d-flex flex-column">
+                            <span class="badge badge-category rounded-pill mb-2 align-self-start">
+                                <i class="bi bi-building me-1"></i>{{ event.company_name }}
+                            </span>
+                            <h6 class="fw-bold mb-2">{{ event.title }}</h6>
+                            <p class="text-muted small mb-3">
+                                {{ event.description[:90] }}{% if event.description|length > 90 %}...{% endif %}
+                            </p>
+                            {% if event.location %}
+                            <p class="small text-muted mb-3">
+                                <i class="bi bi-geo-alt me-1"></i>{{ event.location }}
+                            </p>
+                            {% endif %}
+                            <a href="{{ url_for('view_event', event_id=event.id) }}" class="btn btn-sm btn-cc-primary mt-auto">
+                                View Details <i class="bi bi-arrow-right ms-1"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+
+        {% else %}
+            <div class="cc-empty-state">
+                <div class="cc-empty-icon">
+                    <i class="bi bi-calendar-x"></i>
+                </div>
+                <h4 class="fw-bold mb-2">No events found</h4>
+                <p class="text-muted mb-4">
+                    There are no events matching your search right now. Check back soon or explore all events.
+                </p>
+                {% if session.get('role') == 'company' %}
+                    <a href="{{ url_for('create_event') }}" class="btn btn-cc-primary">
+                        <i class="bi bi-plus-circle me-1"></i>Create the First Event
+                    </a>
+                {% else %}
+                    <a href="{{ url_for('company_auth') }}" class="btn btn-cc-primary">
+                        <i class="bi bi-building me-1"></i>Are you a company? Host an event
+                    </a>
+                {% endif %}
+            </div>
+        {% endif %}
+
+    </div>
+</section>
+
+{% endblock %}

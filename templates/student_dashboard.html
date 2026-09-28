@@ -1,0 +1,94 @@
+{% extends "layout.html" %}
+{% block body_class %}page-student-dashboard{% endblock %}
+{% block title %}Student Dashboard — CampusConnect{% endblock %}
+
+
+{% block content %}
+
+<section class="cc-dash-header">
+    <div class="container position-relative" style="z-index:2;">
+        <h1 class="fw-bold mb-1">Welcome back, {{ session.get('name') }} </h1>
+        <p class="mb-0" style="opacity:0.9;">Here's what's happening with your event registrations.</p>
+    </div>
+</section>
+
+<div class="container">
+    <div class="row g-4 mb-3">
+        <div class="col-md-4">
+            <div class="cc-stat-card">
+                <div class="cc-stat-icon" style="background: linear-gradient(135deg, #4338ca, #6366f1);">
+                    <i class="bi bi-calendar-check"></i>
+                </div>
+                <div class="cc-stat-value">{{ registrations|length }}</div>
+                <small class="text-muted">Total Registrations</small>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="cc-stat-card">
+                <div class="cc-stat-icon" style="background: linear-gradient(135deg, #0d9488, #14b8a6);">
+                    <i class="bi bi-hourglass-split"></i>
+                </div>
+                <div class="cc-stat-value">{{ registrations|length }}</div>
+                <small class="text-muted">Upcoming Events</small>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="cc-stat-card">
+                <div class="cc-stat-icon" style="background: linear-gradient(135deg, #db2777, #ec4899);">
+                    <i class="bi bi-chat-dots"></i>
+                </div>
+                <div class="cc-stat-value"><a href="{{ url_for('list_messages') }}" class="text-decoration-none" style="color:inherit;">View</a></div>
+                <small class="text-muted">Your Messages</small>
+            </div>
+        </div>
+    </div>
+</div>
+
+<section class="pb-5 pt-3">
+    <div class="container">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h5 class="fw-bold mb-0"><i class="bi bi-ticket-perforated me-2 text-primary"></i>My Registrations</h5>
+            <a href="{{ url_for('list_events') }}" class="btn btn-cc-outline btn-sm">
+                <i class="bi bi-search me-1"></i>Browse More Events
+            </a>
+        </div>
+
+        {% if registrations %}
+            <div class="row g-4">
+                {% for reg in registrations %}
+                <div class="col-md-6 col-lg-4">
+                    <div class="card cc-reg-card p-3 h-100">
+                        <div class="d-flex align-items-start gap-3">
+                            <div class="cc-reg-icon"><i class="bi bi-calendar-event"></i></div>
+                            <div class="flex-grow-1">
+                                <h6 class="fw-bold mb-1">{{ reg.title }}</h6>
+                                <p class="small text-muted mb-2">
+                                    <i class="bi bi-calendar3 me-1"></i>{{ reg.event_date }}
+                                    {% if reg.location %} &nbsp;·&nbsp; <i class="bi bi-geo-alt me-1"></i>{{ reg.location }}{% endif %}
+                                </p>
+                                <span class="badge bg-success-subtle text-success-emphasis small">
+                                    <i class="bi bi-check-circle me-1"></i>Registered
+                                </span>
+                            </div>
+                        </div>
+                        <a href="{{ url_for('view_event', event_id=reg.id) }}" class="btn btn-cc-primary btn-sm w-100 mt-3">
+                            View Event
+                        </a>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="cc-empty-state">
+                <div class="cc-empty-icon"><i class="bi bi-calendar-x"></i></div>
+                <h5 class="fw-bold mb-2">No registrations yet</h5>
+                <p class="text-muted mb-4">You haven't registered for any events. Explore what's happening on campus.</p>
+                <a href="{{ url_for('list_events') }}" class="btn btn-cc-primary">
+                    <i class="bi bi-search me-1"></i>Browse Events
+                </a>
+            </div>
+        {% endif %}
+    </div>
+</section>
+
+{% endblock %}

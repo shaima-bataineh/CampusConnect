@@ -1,0 +1,140 @@
+{% extends "layout.html" %}
+{% block body_class %}page-student-auth{% endblock %}
+{% block title %}Student Login / Register — CampusConnect{% endblock %}
+
+
+{% block content %}
+<div class="container py-5">
+    <div class="auth-wrapper">
+        <div class="row g-0 w-100 shadow-lg rounded-4 overflow-hidden">
+
+            <!-- Left branding panel -->
+            <div class="col-lg-5 d-none d-lg-flex">
+                <div class="auth-side-panel w-100">
+                    <div class="auth-icon-badge">
+                        <i class="bi bi-mortarboard-fill"></i>
+                    </div>
+                    <h2 class="fw-bold mb-3">Student Access</h2>
+                    <p class="mb-4" style="opacity:0.9;">
+                        Discover career fairs, workshops, and networking events hosted by top companies right on your campus.
+                    </p>
+                    <ul class="list-unstyled auth-feature-list">
+                        <li><i class="bi bi-check-circle-fill"></i> Browse & register for campus events</li>
+                        <li><i class="bi bi-check-circle-fill"></i> Message companies directly</li>
+                        <li><i class="bi bi-check-circle-fill"></i> Track your registrations in one place</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Right auth card -->
+            <div class="col-lg-7">
+                <div class="auth-card-panel">
+
+                    <ul class="nav nav-pills cc-nav-pills gap-2 mb-4" id="studentAuthTabs" role="tablist">
+                        
+                         <li class="nav-item d-none" role="presentation">
+                      <button class="nav-link active"
+                        id="login-tab"
+                        data-bs-toggle="pill"
+                        data-bs-target="#login-pane"
+                        type="button"
+                        role="tab">
+                       Login
+                    </button>
+                    </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link" id="register-tab" data-bs-toggle="pill"
+                                    data-bs-target="#register-pane" type="button" role="tab">
+                                <i class="bi bi-person-plus me-1"></i>Register
+                            </button>
+                        </li>
+                    </ul>
+
+                    <div class="tab-content" id="studentAuthTabsContent">
+
+                        <!-- LOGIN -->
+                        <div class="tab-pane fade show active" id="login-pane" role="tabpanel">
+                            <h4 class="fw-bold mb-1">Welcome back</h4>
+                            <p class="text-muted mb-4">Log in to your student account</p>
+
+                            <form method="POST" action="{{ url_for('student_login') }}" novalidate>
+                                <div class="mb-3">
+                                    <label class="form-label fw-semibold">Email address</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text bg-light"><i class="bi bi-envelope"></i></span>
+                                        <input type="email" class="form-control" name="email"
+                                               placeholder="you@university.edu" required>
+                                    </div>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label fw-semibold">Password</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text bg-light"><i class="bi bi-lock"></i></span>
+                                        <input type="password" class="form-control" name="password"
+                                               placeholder="••••••••" required>
+                                    </div>
+                                </div>
+                                <button type="submit" class="btn btn-student w-100 mt-2">
+                                    <i class="bi bi-box-arrow-in-right me-1"></i>Log In
+                                </button>
+                            </form>
+                        </div>
+
+                        <!-- REGISTER -->
+                        <div class="tab-pane fade" id="register-pane" role="tabpanel">
+                            <h4 class="fw-bold mb-1">Create student account</h4>
+                            <p class="text-muted mb-4">It only takes a minute</p>
+
+                            <form method="POST" action="{{ url_for('student_register') }}" novalidate>
+                                <div class="mb-3">
+                                    <label class="form-label fw-semibold">Full Name</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text bg-light"><i class="bi bi-person"></i></span>
+                                        <input type="text" class="form-control" name="name"
+                                               placeholder="Jane Doe" required>
+                                    </div>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label fw-semibold">Email address</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text bg-light"><i class="bi bi-envelope"></i></span>
+                                        <input type="email" class="form-control" name="email"
+                                               placeholder="you@university.edu" required>
+                                    </div>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label fw-semibold">Password</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text bg-light"><i class="bi bi-lock"></i></span>
+                                        <input type="password" class="form-control" name="password"
+                                               placeholder="Create a password" minlength="6" required>
+                                    </div>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label fw-semibold">Confirm Password</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text bg-light"><i class="bi bi-lock-fill"></i></span>
+                                        <input type="password" class="form-control" name="confirm_password"
+                                               placeholder="Re-enter password" minlength="6" required>
+                                    </div>
+                                </div>
+                                <input type="hidden" name="role" value="student">
+                                <button type="submit" class="btn btn-student w-100 mt-2">
+                                    <i class="bi bi-person-plus me-1"></i>Create Account
+                                </button>
+                            </form>
+                        </div>
+
+                    </div>
+
+                    <p class="text-center text-muted mt-4 mb-0 small">
+                        Are you a company?
+                        <a href="{{ url_for('company_auth') }}" class="fw-semibold text-decoration-none">Go to company portal</a>
+                    </p>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+{% endblock %}
