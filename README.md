@@ -58,33 +58,9 @@ The system supports different user roles and allows users to manage events, regi
 
 ### Deployment
 - Render
+- 
+#Author
+Shaimaa ALBataineh
 
-## 📂 Project Structure
-
-```text
-CampusConnect/
-│
-├── static/
-│   ├── css/
-│   │   └── style.css
-│   └── uploads/
-│
-├── templates/
-│   ├── about.html
-│   ├── company_auth.html
-│   ├── company_dashboard.html
-│   ├── contact.html
-│   ├── create_event.html
-│   ├── details.html
-│   ├── edit_event.html
-│   ├── events.html
-│   ├── home.html
-│   ├── layout.html
-│   ├── student_auth.html
-│   └── student_dashboard.html
-│
-├── app.py
-├── init_db.py
-├── database.db
-├── requirements.txt
-└── README.md
+##License
+This project was developed for educational and training purposes.
